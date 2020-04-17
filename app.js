@@ -44,7 +44,9 @@ const houseSchema = {
   updatetime: Number,
   refreshtime: Number,
   closed: Number,
-  condition: String
+  condition: String,
+  corordinate_x: Number,
+  corordinate_y: Number
 };
 
 const House = mongoose.model("House", houseSchema);
