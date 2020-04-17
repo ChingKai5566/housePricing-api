@@ -11,7 +11,8 @@ app.use(bodyParser.urlencoded({
 
 mongoose.connect("mongodb+srv://Admin-ChingKai56:Uglyno1.@cluster0-qicjs.mongodb.net/houseDB", {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false
 });
 
 var db = mongoose.connection;
@@ -48,6 +49,7 @@ const houseSchema = {
 
 const House = mongoose.model("House", houseSchema);
 
+
 app.use(express.json());
 
 
@@ -71,14 +73,32 @@ app.route("/house")
   // save new house
   .post(function(req, res) {
     if (checkToken(req.headers.token)) {
-      const newHouse = new House(req.body);
-      newHouse.save(function(err) {
-        if (!err) {
-          res.send("Successfully added a new house.");
+      House.exists({ id: req.body.id}).then(exists => {
+        if (exists) {
+          House.findOneAndUpdate({
+            id: req.body.id
+          }, req.body, {
+            upsert: true
+          }, function(err, doc) {
+            if (err) {
+              res.send(500, {
+                error: err
+              });
+            } else {
+              res.send('Succesfully updated.');
+            }
+          });
         } else {
-          res.send(err);
+          const newHouse = new House(req.body);
+          newHouse.save(function(err) {
+            if (!err) {
+              res.send("Successfully added a new house.");
+            } else {
+              res.send(err);
+            }
+          });
         }
-      });
+      })
     } else {
       res.sendStatus(401);
     }
@@ -100,14 +120,15 @@ app.route("/house")
     }
   });
 
-  let port = process.env.PORT;
-  if (port == null || port == "") {
-    port = 3000;
-  }
 
-  app.listen(port, function() {
-    console.log("Server started Successfully!");
-  });
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+
+app.listen(port, function() {
+  console.log("Server started Successfully!");
+});
 
 function checkToken(token) {
   if (token === "crawl591coronavirusisfromwuhan") {
