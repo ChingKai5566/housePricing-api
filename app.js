@@ -74,6 +74,7 @@ app.route("/house")
 
   // save new house
   .post(function(req, res) {
+    console.log(req.body);
     if (checkToken(req.headers.token)) {
       House.exists({ id: req.body.id}).then(exists => {
         if (exists) {
