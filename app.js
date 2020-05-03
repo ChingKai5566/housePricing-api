@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-mongoose.connect("mongodb+srv://Admin-ChingKai56:Uglyno1.@cluster0-qicjs.mongodb.net/houseDB", {
+mongoose.connect("mongodb+srv://Admin-ChingKai56:GKqu5IN1c8XMei5u@cluster0-qicjs.mongodb.net/test", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
