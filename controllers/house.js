@@ -21,36 +21,31 @@ exports.getHouses = function (req, res) {
 // @route     POST /house
 // @access    Public
 exports.postHouse = function (req, res) {
-    console.log(req.body);
     if (checkToken(req.headers.token)) {
         House.exists({
-            id: req.body.id
-        }).then(exists => {
-            if (exists) {
-                House.findOneAndUpdate({
-                    id: req.body.id
-                }, req.body, {
-                    upsert: true
-                }, function (err, doc) {
-                    if (err) {
-                        res.send(500, {
-                            error: err
-                        });
-                    } else {
-                        res.send('Successfully updated.');
-                    }
-                });
-            } else {
-                const newHouse = new House(req.body);
-                newHouse.save(function (err) {
-                    if (!err) {
-                        res.send("Successfully added a new house.");
-                    } else {
-                        res.send(err);
-                    }
-                });
-            }
-        })
+                houseId: req.body.houseId
+            })
+            .then(exists => {
+                if (exists) {
+                    House.findOneAndUpdate({
+                        houseId: req.body.houseId
+                    }, req.body, {
+                        upsert: true
+                    }, function (err, doc) {
+                        if (err) {
+                            res.send(500, {
+                                error: err
+                            });
+                        } else {
+                            res.send('Successfully updated.');
+                        }
+                    });
+                } else {
+                    const newHouse = House.create(req.body);
+
+                    res.send("Successfully added a new house.");
+                }
+            })
     } else {
         res.sendStatus(401);
     }

@@ -1,30 +1,54 @@
 const mongoose = require('mongoose');
 
-const houseSchema = {
-    id: Number,
-    user_id: Number,
-    address: String,
-    post_id: Number,
-    regionid: Number,
-    region_name: String,
-    sectionid: Number,
-    streetid: Number,
+const houseSchema = new mongoose.Schema({
+    houseId: Number,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    },
+    userId: Number,
+    postId: Number,
+    regionId: Number,
+    regionName: String,
+    sectionId: Number,
+    streetId: Number,
     type: Number,
     kind: Number,
     floor: Number,
-    allfloor: Number,
+    allFloor: Number,
     room: Number,
-    detail_url: String,
     area: Number,
     price: Number,
     cover: String,
-    address_img_title: String,
-    updatetime: Number,
-    refreshtime: Number,
+    updateTime: Date,
     closed: Number,
     condition: String,
-    corordinate_x: Number,
-    corordinate_y: Number
-};
+    sectionName: String,
+    fullAddress: String,
+    streetName: String,
+    alleyName: String,
+    caseName: String,
+    layout: String,
+    caseId: Number,
+    iconClass: String,
+    kindName: String,
+    corordinateX: Number,
+    corordinateY: Number
+});
+
+// Sets the created_at parameter equal to the current time
+houseSchema.pre('save', function (next) {
+    now = new Date().toLocaleString("en-US", {timeZone: "Asia/Taipei"});;
+    this.updatedAt = now;
+
+    if (!this.createdAt) {
+        this.createdAt = now
+    }
+    next();
+});
 
 module.exports = mongoose.model("House", houseSchema);
