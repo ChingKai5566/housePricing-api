@@ -10,7 +10,7 @@ const priceSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    price: Number,
+    price: Number
 });
 
 // Sets the created_at parameter equal to the current time

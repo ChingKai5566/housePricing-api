@@ -24,7 +24,7 @@ const houseSchema = new mongoose.Schema({
     area: Number,
     price: Number,
     cover: String,
-    updateTime: Date,
+    updateTime: Number,
     closed: Number,
     condition: String,
     sectionName: String,
@@ -44,9 +44,9 @@ const houseSchema = new mongoose.Schema({
 houseSchema.pre('save', function (next) {
     now = new Date().toLocaleString("en-US", {timeZone: "Asia/Taipei"});;
     this.updatedAt = now;
-
+    
     if (!this.createdAt) {
-        this.createdAt = now
+        this.createdAt = now;
     }
     next();
 });

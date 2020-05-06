@@ -45,7 +45,6 @@ exports.postHouse = function (req, res) {
                     });
                 } else {
                     const newHouse = House.create(req.body);
-
                     res.send("Successfully added a new house.");
                 }
             })
