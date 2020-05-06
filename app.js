@@ -15,12 +15,14 @@ const app = express();
 
 // Route files
 const houses = require('./routes/house');
+const prices = require('./routes/price');
 
 // Body parser
 app.use(express.json());
 
 // Mount routers
 app.use('/', houses);
+app.use('/', prices);
 
 let port = process.env.PORT;
 if (port == null || port == "") {

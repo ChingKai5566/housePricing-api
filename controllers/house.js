@@ -1,4 +1,5 @@
 const House = require('../models/House');
+const Price = require('../models/Price');
 
 // @desc      Get all houses
 // @route     GET /house
@@ -17,11 +18,13 @@ exports.getHouses = function (req, res) {
     }
 }
 
-// @desc      Create or update new House
+// @desc      Create or update new House and create Price
 // @route     POST /house
 // @access    Public
 exports.postHouse = function (req, res) {
     if (checkToken(req.headers.token)) {
+        const newPrice = Price.create(req.body);
+
         House.exists({
                 houseId: req.body.houseId
             })
