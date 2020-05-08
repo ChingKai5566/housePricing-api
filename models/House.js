@@ -36,8 +36,8 @@ const houseSchema = new mongoose.Schema({
     caseId: Number,
     iconClass: String,
     kindName: String,
-    corordinateX: Number,
-    corordinateY: Number
+    coordinateX: Number,
+    coordinateY: Number
 });
 
 // Sets the created_at parameter equal to the current time
