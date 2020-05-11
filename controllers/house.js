@@ -58,6 +58,11 @@ exports.postHouse = function (req, res) {
 // @access    Public
 exports.deleteHouse = function (req, res) {
     if (checkToken(req.headers.token)) {
+        Price.deleteMany(function (err) {
+            if (err) {
+                res.send(err);
+            }
+        });
         House.deleteMany(function (err) {
             if (!err) {
                 res.send("Successfully deleted all houses.");

@@ -1,15 +1,8 @@
 const mongoose = require('mongoose');
+const dateTimeFormat = require('../middleware/dateTimeFormat');
 
 const houseSchema = new mongoose.Schema({
     houseId: Number,
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
-    },
     userId: Number,
     postId: Number,
     regionId: Number,
@@ -24,7 +17,7 @@ const houseSchema = new mongoose.Schema({
     area: Number,
     price: Number,
     cover: String,
-    updateTime: Number,
+    updateTime: String,
     closed: Number,
     condition: String,
     sectionName: String,
@@ -38,17 +31,19 @@ const houseSchema = new mongoose.Schema({
     kindName: String,
     coordinateX: Number,
     coordinateY: Number
+}, {
+    timestamps: {
+        createdAt: 'created',
+        updatedAt: 'updated'
+    }
 });
 
-// Sets the created_at parameter equal to the current time
 houseSchema.pre('save', function (next) {
-    now = new Date().toLocaleString("en-US", {timeZone: "Asia/Taipei"});;
-    this.updatedAt = now;
-    
-    if (!this.createdAt) {
-        this.createdAt = now;
-    }
+    this.updateTime = dateTimeFormat(this.updateTime)
+    console.log(this.updateTime);
     next();
-});
+})
+
+
 
 module.exports = mongoose.model("House", houseSchema);
