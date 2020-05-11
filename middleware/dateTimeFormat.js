@@ -51,4 +51,4 @@ function getSeconds(date) {
     return second;
 }
 
-module.exports = dateTimeFormat
+module.exports = dateTimeFormat;

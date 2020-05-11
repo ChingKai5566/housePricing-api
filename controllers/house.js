@@ -23,28 +23,40 @@ exports.getHouses = function (req, res) {
 // @access    Public
 exports.postHouse = function (req, res) {
     if (checkToken(req.headers.token)) {
-        const newPrice = Price.create(req.body);
 
         House.exists({
                 houseId: req.body.houseId
             })
             .then(exists => {
                 if (exists) {
+                    var query = House.findOne({
+                        houseId: req.body.houseId
+                    });
+                    query.exec((err, house) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            if (house.price != req.body.price) {
+                                const newPrice = Price.create(req.body);
+                            }
+                        }
+                    })
+
                     House.findOneAndUpdate({
                         houseId: req.body.houseId
-                    }, req.body, {
-                        upsert: true
-                    }, function (err, doc) {
+                    },req.body, {new: true}, function (err, doc) {
                         if (err) {
                             res.send(500, {
                                 error: err
                             });
                         } else {
+                            doc.save();
                             res.send('Successfully updated.');
                         }
                     });
                 } else {
                     const newHouse = House.create(req.body);
+                    const newPrice = Price.create(req.body);
                     res.send("Successfully added a new house.");
                 }
             })

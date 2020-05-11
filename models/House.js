@@ -38,12 +38,10 @@ const houseSchema = new mongoose.Schema({
     }
 });
 
-houseSchema.pre('save', function (next) {
-    this.updateTime = dateTimeFormat(this.updateTime)
-    console.log(this.updateTime);
+houseSchema.pre('save', async function (next) {
+    const time = await dateTimeFormat(this.updateTime);
+    this.updateTime = time;
     next();
 })
-
-
 
 module.exports = mongoose.model("House", houseSchema);
